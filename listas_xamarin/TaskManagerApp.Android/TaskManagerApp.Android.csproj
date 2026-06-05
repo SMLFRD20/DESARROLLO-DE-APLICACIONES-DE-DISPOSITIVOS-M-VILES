@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationId>com.academic.taskmanagerapp</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <!-- Ignore NuGet package downgrade warnings and target framework EOL warnings that are safely resolved -->
+    <NoWarn>$(NoWarn);NU1605;NETSDK1202</NoWarn>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <AndroidXSkipMigration>true</AndroidXSkipMigration>
+    <JavaSdkDirectory>C:\Program Files\Android\Android Studio\jbr</JavaSdkDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2662" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.8.1" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TaskManagerApp\TaskManagerApp.csproj" />
+  </ItemGroup>
+
+  <Target Name="RemoveDuplicateLibraries" BeforeTargets="BeforeBuild;ResolveAssemblyReferences;_CompileToDalvikWithD8;_CompileDex;Desugar">
+    <ItemGroup>
+      <AndroidLibrary Remove="@(AndroidLibrary)" Condition="'%(Filename)' == 'guava-listenablefuture'" />
+      <AndroidJavaLibrary Remove="@(AndroidJavaLibrary)" Condition="'%(Filename)' == 'guava-listenablefuture'" />
+    </ItemGroup>
+  </Target>
+
+</Project>
+
+
+
+

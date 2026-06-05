@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:TaskManagerApp.ViewModels"
+             x:Class="TaskManagerApp.Views.MainPage"
+             Title="{Binding Title}"
+             BackgroundColor="#F3F4F6">
+
+    <!-- Premium Color Palette and Layout Tokens -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryColor">#4F46E5</Color>
+            <Color x:Key="PrimaryColorDark">#3730A3</Color>
+            <Color x:Key="TextColorPrimary">#111827</Color>
+            <Color x:Key="TextColorSecondary">#4B5563</Color>
+            <Color x:Key="CardBackground">#FFFFFF</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <!-- Main Outer Container -->
+    <Grid RowDefinitions="*, Auto" Margin="0">
+
+        <!-- Pull-to-Refresh Component for interactive updates -->
+        <RefreshView Grid.Row="0"
+                     Command="{Binding LoadTasksCommand}"
+                     IsRefreshing="{Binding IsBusy}"
+                     RefreshColor="{StaticResource PrimaryColor}">
+
+            <!-- Core Task list display using performance-optimized CollectionView -->
+            <CollectionView ItemsSource="{Binding Tasks}"
+                            SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
+                            SelectionMode="Single"
+                            Margin="16,12,16,0">
+
+                <CollectionView.Header>
+                    <StackLayout Margin="4,8,4,16">
+                        <Label Text="Lista de Tareas Académicas"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextColorPrimary}" />
+                        <Label Text="Toca cualquier tarea para editar sus detalles o desliza hacia abajo para actualizar manualmente."
+                               FontSize="13"
+                               TextColor="{StaticResource TextColorSecondary}"
+                               Margin="0,2,0,0" />
+                    </StackLayout>
+                </CollectionView.Header>
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="1" VerticalItemSpacing="12" />
+                </CollectionView.ItemsLayout>
+
+                <!-- Custom Elegant Task Item Card Template -->
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame HasShadow="True"
+                               BorderColor="Transparent"
+                               CornerRadius="12"
+                               Padding="16"
+                               Margin="2,2,2,4"
+                               BackgroundColor="{StaticResource CardBackground}">
+                            
+                            <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+                                
+                                <!-- Task Title -->
+                                <Label Grid.Column="0" Grid.Row="0"
+                                       Text="{Binding Name}"
+                                       FontSize="18"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource TextColorPrimary}"
+                                       LineBreakMode="TailTruncation" />
+
+                                <!-- Shortened task description -->
+                                <Label Grid.Column="0" Grid.Row="1"
+                                       Text="{Binding Description}"
+                                       FontSize="14"
+                                       TextColor="{StaticResource TextColorSecondary}"
+                                       Margin="0,6,0,0"
+                                       LineBreakMode="WordWrap"
+                                       MaxLines="2" />
+
+                                <!-- Modern Right Arrow chevron indicator -->
+                                <Label Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
+                                       Text="❯"
+                                       FontSize="16"
+                                       TextColor="#9CA3AF"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="End"
+                                       Margin="12,0,0,0" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <!-- Elegant Empty State View when database has no records -->
+                <CollectionView.EmptyView>
+                    <StackLayout VerticalOptions="CenterAndExpand"
+                                 HorizontalOptions="CenterAndExpand"
+                                 Padding="32"
+                                 Margin="0,60,0,0">
+                        <Label Text="📝"
+                               FontSize="72"
+                               HorizontalOptions="Center" />
+                        <Label Text="No hay tareas agregadas"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextColorPrimary}"
+                               HorizontalOptions="Center"
+                               Margin="0,16,0,6" />
+                        <Label Text="Crea elementos en la lista para realizar el seguimiento de tus tareas, exámenes y entregas presionando el botón Agregar de abajo."
+                               FontSize="14"
+                               TextColor="{StaticResource TextColorSecondary}"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               LineHeight="1.3" />
+                    </StackLayout>
+                </CollectionView.EmptyView>
+
+            </CollectionView>
+        </RefreshView>
+
+        <!-- Floating Styled Button Action bar -->
+        <Frame Grid.Row="1"
+               Padding="0"
+               Margin="18,12,18,18"
+               CornerRadius="26"
+               HasShadow="True"
+               BackgroundColor="Transparent"
+               BorderColor="Transparent"
+               VerticalOptions="End">
+            <Button Text="+ AGREGAR NUEVA TAREA"
+                    Command="{Binding AddTaskCommand}"
+                    BackgroundColor="{StaticResource PrimaryColor}"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HeightRequest="52"
+                    CornerRadius="26" />
+        </Frame>
+
+    </Grid>
+
+</ContentPage>

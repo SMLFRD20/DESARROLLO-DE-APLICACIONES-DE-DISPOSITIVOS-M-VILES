@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:TaskManagerApp.ViewModels"
+             x:Class="TaskManagerApp.Views.EditTaskPage"
+             Title="{Binding Title}"
+             BackgroundColor="#F3F4F6">
+
+    <!-- Theme Tokens -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryColor">#4F46E5</Color>
+            <Color x:Key="DangerColor">#EF4444</Color>
+            <Color x:Key="TextColorPrimary">#111827</Color>
+            <Color x:Key="TextColorSecondary">#4B5563</Color>
+            <Color x:Key="CardBackground">#FFFFFF</Color>
+            <Color x:Key="InputBorderColor">#D1D5DB</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <!-- ScrollView guarantees smooth layout when keyboard displays -->
+    <ScrollView VerticalScrollBarVisibility="Never">
+        <StackLayout Padding="20,24,20,24" Spacing="20">
+
+            <!-- Carded Input Form Box -->
+            <Frame HasShadow="True"
+                   BorderColor="Transparent"
+                   CornerRadius="12"
+                   Padding="20"
+                   BackgroundColor="{StaticResource CardBackground}">
+                
+                <StackLayout Spacing="16">
+                    
+                    <!-- Task Title Input -->
+                    <StackLayout Spacing="6">
+                        <Label Text="NOMBRE DE LA TAREA *"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextColorSecondary}"
+                               CharacterSpacing="1" />
+                        <Frame Padding="12,0,12,0"
+                               HasShadow="False"
+                               BorderColor="{StaticResource InputBorderColor}"
+                               CornerRadius="8"
+                               HeightRequest="48"
+                               BackgroundColor="Transparent">
+                            <Entry Text="{Binding Name, Mode=TwoWay}"
+                                   Placeholder="Ingresa un título breve y descriptivo..."
+                                   PlaceholderColor="#9CA3AF"
+                                   TextColor="{StaticResource TextColorPrimary}"
+                                   FontSize="15"
+                                   VerticalOptions="Center" />
+                        </Frame>
+                    </StackLayout>
+
+                    <!-- Task Description Input -->
+                    <StackLayout Spacing="6">
+                        <Label Text="DESCRIPCIÓN"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextColorSecondary}"
+                               CharacterSpacing="1" />
+                        <Frame Padding="12,8,12,8"
+                               HasShadow="False"
+                               BorderColor="{StaticResource InputBorderColor}"
+                               CornerRadius="8"
+                               HeightRequest="120"
+                               BackgroundColor="Transparent">
+                            <Editor Text="{Binding Description, Mode=TwoWay}"
+                                    Placeholder="Describe los detalles, fecha límite o requisitos de esta tarea..."
+                                    PlaceholderColor="#9CA3AF"
+                                    TextColor="{StaticResource TextColorPrimary}"
+                                    FontSize="15"
+                                    AutoSize="Disabled" />
+                        </Frame>
+                    </StackLayout>
+
+                </StackLayout>
+            </Frame>
+
+            <!-- Buttons Form Actions Panel -->
+            <StackLayout Spacing="12" Margin="4,8,4,0">
+                
+                <!-- Save Button (Primary Action) -->
+                <Button Text="Guardar Tarea"
+                        Command="{Binding SaveCommand}"
+                        BackgroundColor="{StaticResource PrimaryColor}"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HeightRequest="48"
+                        CornerRadius="8" />
+
+                <!-- Delete Button (Destructive Action - Only Visible if Existing Task) -->
+                <Button Text="Eliminar Tarea"
+                        Command="{Binding DeleteCommand}"
+                        IsVisible="{Binding IsExistingTask}"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource DangerColor}"
+                        BorderColor="{StaticResource DangerColor}"
+                        BorderWidth="1.5"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HeightRequest="48"
+                        CornerRadius="8" />
+
+                <!-- Cancel Button (Discard & Go Back Action) -->
+                <Button Text="Cancelar"
+                        Command="{Binding CancelCommand}"
+                        BackgroundColor="#E5E7EB"
+                        TextColor="{StaticResource TextColorSecondary}"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HeightRequest="48"
+                        CornerRadius="8" />
+
+            </StackLayout>
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
